@@ -36,4 +36,16 @@ jobs:
       - name: Deploy to production
         run: |
           echo "Deploying to production..."
-          # Add your deployment script here
+          jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t myapp:latest .
+
+      - name: Run Docker container
+        run: docker run -d -p 8080:80 myapp
+
