@@ -1,19 +1,28 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                sh 'echo Building...'
+                script {
+                    docker.build('myapp:latest')
+                }
             }
         }
         stage('Test') {
             steps {
-                sh 'pytest'
+                script {
+                    // Add steps to run tests, e.g., using PyTest for Python bots
+                }
             }
         }
-        stage('Deploy') {
+        stage('Deploy to Kubernetes') {
             steps {
-                sh './deploy.sh'
+                script {
+                    kubernetesDeploy(
+                        configs: 'path-to-deployment.yaml',
+                        kubeconfigId: 'your-kubeconfig-credentials-id'
+                    )
+                }
             }
         }
     }
